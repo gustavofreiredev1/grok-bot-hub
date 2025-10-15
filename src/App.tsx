@@ -6,8 +6,13 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import Dashboard from "./pages/Dashboard";
 import Bots from "./pages/Bots";
+import Messages from "./pages/Messages";
+import FileUpload from "./pages/FileUpload";
+import Schedule from "./pages/Schedule";
+import Reports from "./pages/Reports";
 import Analytics from "./pages/Analytics";
 import Automation from "./pages/Automation";
+import UserGuide from "./pages/UserGuide";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
@@ -23,8 +28,13 @@ const App = () => (
           <Route element={<Layout />}>
             <Route path="/" element={<Dashboard />} />
             <Route path="/bots" element={<Bots />} />
+            <Route path="/messages" element={<Messages />} />
+            <Route path="/upload" element={<FileUpload />} />
+            <Route path="/schedule" element={<Schedule />} />
+            <Route path="/reports" element={<Reports />} />
             <Route path="/analytics" element={<Analytics />} />
             <Route path="/automation" element={<Automation />} />
+            <Route path="/guide" element={<UserGuide />} />
             <Route path="/settings" element={<Settings />} />
           </Route>
           <Route path="*" element={<NotFound />} />
