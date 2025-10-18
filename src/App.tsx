@@ -12,6 +12,7 @@ import Schedule from "./pages/Schedule";
 import Reports from "./pages/Reports";
 import Analytics from "./pages/Analytics";
 import Automation from "./pages/Automation";
+import FlowEditor from "./pages/FlowEditor";
 import UserGuide from "./pages/UserGuide";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
@@ -34,6 +35,7 @@ const App = () => (
             <Route path="/reports" element={<Reports />} />
             <Route path="/analytics" element={<Analytics />} />
             <Route path="/automation" element={<Automation />} />
+            <Route path="/flow-editor" element={<FlowEditor />} />
             <Route path="/guide" element={<UserGuide />} />
             <Route path="/settings" element={<Settings />} />
           </Route>

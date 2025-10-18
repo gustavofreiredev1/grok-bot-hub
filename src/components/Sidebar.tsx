@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { Bot, LayoutDashboard, BarChart3, Settings, Zap } from "lucide-react";
+import { Bot, LayoutDashboard, BarChart3, Settings, Zap, Workflow } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 import { Send, Upload, Calendar, FileText, BookOpen } from "lucide-react";
@@ -13,6 +13,7 @@ const navigation = [
   { name: "Relatórios", href: "/reports", icon: FileText },
   { name: "Analytics", href: "/analytics", icon: BarChart3 },
   { name: "Automação", href: "/automation", icon: Zap },
+  { name: "Editor de Fluxos", href: "/flow-editor", icon: Workflow },
   { name: "Manual", href: "/guide", icon: BookOpen },
   { name: "Configurações", href: "/settings", icon: Settings },
 ];

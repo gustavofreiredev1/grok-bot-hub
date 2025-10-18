@@ -1,11 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Zap, Clock, MessageSquare, Play, Pause, Settings } from "lucide-react";
+import { Zap, Clock, MessageSquare, Play, Pause, Settings, Workflow } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
 import { toast } from "sonner";
 
@@ -41,6 +42,7 @@ const automations = [
 ];
 
 const Automation = () => {
+  const navigate = useNavigate();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [automationName, setAutomationName] = useState("");
   const [automationDescription, setAutomationDescription] = useState("");
@@ -175,16 +177,19 @@ const Automation = () => {
       <Card className="bg-gradient-primary border-border p-6">
         <div className="flex items-center gap-4">
           <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/20">
-            <Zap className="h-6 w-6 text-primary" />
+            <Workflow className="h-6 w-6 text-primary" />
           </div>
           <div className="flex-1">
-            <h3 className="font-semibold text-foreground">Crie automações personalizadas</h3>
+            <h3 className="font-semibold text-foreground">Editor Visual de Fluxos</h3>
             <p className="text-sm text-muted-foreground">
-              Configure regras avançadas, respostas automáticas e fluxos de trabalho
+              Crie fluxos de automação complexos de forma visual, arrastando e conectando nós
             </p>
           </div>
-          <Button variant="secondary">
-            Começar
+          <Button 
+            variant="secondary"
+            onClick={() => navigate("/flow-editor")}
+          >
+            Abrir Editor
           </Button>
         </div>
       </Card>
