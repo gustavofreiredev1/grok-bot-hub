@@ -1,7 +1,13 @@
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Zap, Clock, Users, MessageSquare, Play, Pause, Settings } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Zap, Clock, MessageSquare, Play, Pause, Settings } from "lucide-react";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
+import { toast } from "sonner";
 
 const automations = [
   {
@@ -35,6 +41,26 @@ const automations = [
 ];
 
 const Automation = () => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [automationName, setAutomationName] = useState("");
+  const [automationDescription, setAutomationDescription] = useState("");
+
+  const handleCreateAutomation = () => {
+    if (!automationName.trim()) {
+      toast.error("Digite um nome para a automação");
+      return;
+    }
+    toast.success(`Automação "${automationName}" criada com sucesso!`);
+    setAutomationName("");
+    setAutomationDescription("");
+    setIsDialogOpen(false);
+  };
+
+  const toggleAutomation = (name: string, currentStatus: string) => {
+    const newStatus = currentStatus === "active" ? "pausado" : "ativado";
+    toast.success(`Automação "${name}" ${newStatus}`);
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -44,10 +70,51 @@ const Automation = () => {
             Configure e gerencie suas automações
           </p>
         </div>
-        <Button className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-glow">
-          <Zap className="mr-2 h-4 w-4" />
-          Nova Automação
-        </Button>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger asChild>
+            <Button className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-glow">
+              <Zap className="mr-2 h-4 w-4" />
+              Nova Automação
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Criar Nova Automação</DialogTitle>
+              <DialogDescription>
+                Configure uma nova regra de automação
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              <div className="space-y-2">
+                <Label htmlFor="auto-name">Nome da Automação</Label>
+                <Input
+                  id="auto-name"
+                  placeholder="Ex: Boas-vindas Automáticas"
+                  value={automationName}
+                  onChange={(e) => setAutomationName(e.target.value)}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="auto-desc">Descrição</Label>
+                <Textarea
+                  id="auto-desc"
+                  placeholder="Descreva o que esta automação fará..."
+                  value={automationDescription}
+                  onChange={(e) => setAutomationDescription(e.target.value)}
+                  rows={3}
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+                Cancelar
+              </Button>
+              <Button onClick={handleCreateAutomation}>
+                Criar Automação
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
 
       <div className="grid gap-6">
@@ -84,7 +151,12 @@ const Automation = () => {
               </div>
 
               <div className="flex gap-2">
-                <Button variant="outline" size="icon" className="border-border">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="border-border"
+                  onClick={() => toggleAutomation(automation.name, automation.status)}
+                >
                   {automation.status === "active" ? (
                     <Pause className="h-4 w-4" />
                   ) : (

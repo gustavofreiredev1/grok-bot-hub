@@ -15,6 +15,7 @@ interface UploadedFile {
   type: string;
   progress: number;
   status: "uploading" | "completed" | "error";
+  preview?: string;
 }
 
 export default function FileUpload() {
@@ -47,14 +48,18 @@ export default function FileUpload() {
   };
 
   const addFiles = (newFiles: File[]) => {
-    const uploadedFiles: UploadedFile[] = newFiles.map((file, index) => ({
-      id: `${Date.now()}-${index}`,
-      name: file.name,
-      size: file.size,
-      type: file.type,
-      progress: 0,
-      status: "uploading" as const,
-    }));
+    const uploadedFiles: UploadedFile[] = newFiles.map((file, index) => {
+      const preview = file.type.startsWith("image/") ? URL.createObjectURL(file) : undefined;
+      return {
+        id: `${Date.now()}-${index}`,
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        progress: 0,
+        status: "uploading" as const,
+        preview,
+      };
+    });
 
     setFiles((prev) => [...prev, ...uploadedFiles]);
 
@@ -238,7 +243,15 @@ export default function FileUpload() {
                     key={file.id}
                     className="flex items-center gap-3 p-3 rounded-lg bg-secondary/50"
                   >
-                    <div className="text-primary">{getFileIcon(file.type)}</div>
+                    {file.preview ? (
+                      <img
+                        src={file.preview}
+                        alt={file.name}
+                        className="w-12 h-12 rounded object-cover"
+                      />
+                    ) : (
+                      <div className="text-primary">{getFileIcon(file.type)}</div>
+                    )}
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-foreground truncate">
                         {file.name}

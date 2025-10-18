@@ -3,11 +3,16 @@ import { Calendar, Clock, CheckCircle, XCircle, AlertCircle, Trash2, Edit } from
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -25,6 +30,21 @@ interface ScheduledMessage {
 }
 
 export default function Schedule() {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [newSchedule, setNewSchedule] = useState({
+    title: "",
+    message: "",
+    date: "",
+    time: "",
+    groups: [] as string[],
+  });
+
+  const mockGroups = [
+    { id: "1", name: "Grupo Vendas" },
+    { id: "2", name: "Suporte Premium" },
+    { id: "3", name: "Marketing Digital" },
+  ];
+
   const [schedules, setSchedules] = useState<ScheduledMessage[]>([
     {
       id: "1",
@@ -61,6 +81,42 @@ export default function Schedule() {
   const handleDelete = (id: string) => {
     setSchedules((prev) => prev.filter((s) => s.id !== id));
     toast.success("Agendamento removido");
+  };
+
+  const handleCreateSchedule = () => {
+    if (!newSchedule.title.trim() || !newSchedule.message.trim() || !newSchedule.date || !newSchedule.time) {
+      toast.error("Preencha todos os campos obrigatórios");
+      return;
+    }
+    if (newSchedule.groups.length === 0) {
+      toast.error("Selecione ao menos um grupo");
+      return;
+    }
+
+    const schedule: ScheduledMessage = {
+      id: Date.now().toString(),
+      title: newSchedule.title,
+      message: newSchedule.message,
+      groups: newSchedule.groups,
+      scheduledDate: newSchedule.date,
+      scheduledTime: newSchedule.time,
+      status: "pending",
+      createdAt: new Date().toISOString().split("T")[0],
+    };
+
+    setSchedules((prev) => [schedule, ...prev]);
+    toast.success("Agendamento criado com sucesso!");
+    setNewSchedule({ title: "", message: "", date: "", time: "", groups: [] });
+    setIsDialogOpen(false);
+  };
+
+  const toggleGroup = (groupId: string) => {
+    setNewSchedule((prev) => ({
+      ...prev,
+      groups: prev.groups.includes(groupId)
+        ? prev.groups.filter((id) => id !== groupId)
+        : [...prev.groups, groupId],
+    }));
   };
 
   const getStatusIcon = (status: string) => {
@@ -157,10 +213,93 @@ export default function Schedule() {
           <Card className="p-6 bg-card border-border">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold text-foreground">Mensagens Agendadas</h2>
-              <Button>
-                <Calendar className="h-4 w-4 mr-2" />
-                Novo Agendamento
-              </Button>
+              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button>
+                    <Calendar className="h-4 w-4 mr-2" />
+                    Novo Agendamento
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl">
+                  <DialogHeader>
+                    <DialogTitle>Criar Novo Agendamento</DialogTitle>
+                    <DialogDescription>
+                      Configure uma mensagem para ser enviada automaticamente
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="space-y-4 py-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="sched-title">Título do Agendamento</Label>
+                      <Input
+                        id="sched-title"
+                        placeholder="Ex: Promoção Black Friday"
+                        value={newSchedule.title}
+                        onChange={(e) => setNewSchedule({ ...newSchedule, title: e.target.value })}
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="sched-date">Data</Label>
+                        <Input
+                          id="sched-date"
+                          type="date"
+                          value={newSchedule.date}
+                          onChange={(e) => setNewSchedule({ ...newSchedule, date: e.target.value })}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="sched-time">Horário</Label>
+                        <Input
+                          id="sched-time"
+                          type="time"
+                          value={newSchedule.time}
+                          onChange={(e) => setNewSchedule({ ...newSchedule, time: e.target.value })}
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Selecionar Grupos</Label>
+                      <Card className="p-4 max-h-32 overflow-y-auto bg-secondary/20">
+                        <div className="space-y-2">
+                          {mockGroups.map((group) => (
+                            <div key={group.id} className="flex items-center space-x-2">
+                              <Checkbox
+                                id={`sched-${group.id}`}
+                                checked={newSchedule.groups.includes(group.id)}
+                                onCheckedChange={() => toggleGroup(group.id)}
+                              />
+                              <label
+                                htmlFor={`sched-${group.id}`}
+                                className="text-sm font-medium leading-none cursor-pointer"
+                              >
+                                {group.name}
+                              </label>
+                            </div>
+                          ))}
+                        </div>
+                      </Card>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="sched-message">Mensagem</Label>
+                      <Textarea
+                        id="sched-message"
+                        placeholder="Digite a mensagem que será enviada..."
+                        value={newSchedule.message}
+                        onChange={(e) => setNewSchedule({ ...newSchedule, message: e.target.value })}
+                        rows={4}
+                      />
+                    </div>
+                  </div>
+                  <DialogFooter>
+                    <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+                      Cancelar
+                    </Button>
+                    <Button onClick={handleCreateSchedule}>
+                      Agendar Mensagem
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
             </div>
 
             <div className="space-y-3">

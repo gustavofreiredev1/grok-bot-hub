@@ -1,17 +1,18 @@
 import { useState } from "react";
-import { Send, Clock, Users, FileText, Plus } from "lucide-react";
+import { Send, Clock, Users, FileText, Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 export default function Messages() {
   const [message, setMessage] = useState("");
   const [selectedGroups, setSelectedGroups] = useState<string[]>([]);
+  const [sendType, setSendType] = useState<"instant" | "scheduled">("instant");
 
   const mockGroups = [
     { id: "1", name: "Grupo Vendas", members: 245 },
@@ -20,13 +21,38 @@ export default function Messages() {
     { id: "4", name: "Desenvolvimento", members: 34 },
   ];
 
+  const templates = [
+    { id: "1", name: "Boas-vindas", content: "Olá! Seja bem-vindo ao nosso grupo! 👋" },
+    { id: "2", name: "Promoção", content: "🎉 Aproveite nossa promoção especial! Até 50% de desconto!" },
+    { id: "3", name: "Lembrete", content: "📅 Lembrando você sobre nosso evento amanhã às 10h!" },
+  ];
+
+  const toggleGroup = (groupId: string) => {
+    setSelectedGroups(prev =>
+      prev.includes(groupId)
+        ? prev.filter(id => id !== groupId)
+        : [...prev, groupId]
+    );
+  };
+
   const handleSend = () => {
-    if (!message || selectedGroups.length === 0) {
-      toast.error("Selecione grupos e escreva uma mensagem");
+    if (!message.trim()) {
+      toast.error("Escreva uma mensagem");
       return;
     }
-    toast.success("Mensagem enviada com sucesso!");
+    if (selectedGroups.length === 0) {
+      toast.error("Selecione ao menos um grupo");
+      return;
+    }
+    
+    toast.success(`Mensagem ${sendType === "instant" ? "enviada" : "agendada"} com sucesso!`);
     setMessage("");
+    setSelectedGroups([]);
+  };
+
+  const applyTemplate = (content: string) => {
+    setMessage(content);
+    toast.success("Template aplicado");
   };
 
   return (
@@ -84,42 +110,67 @@ export default function Messages() {
           
           <div className="space-y-4">
             <div>
-              <Label htmlFor="message-type">Tipo de Envio</Label>
-              <Select defaultValue="instant">
-                <SelectTrigger id="message-type">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="instant">Envio Instantâneo</SelectItem>
-                  <SelectItem value="scheduled">Agendado</SelectItem>
-                </SelectContent>
-              </Select>
+              <Label>Tipo de Envio</Label>
+              <div className="flex gap-2 mt-2">
+                <Button
+                  type="button"
+                  variant={sendType === "instant" ? "default" : "outline"}
+                  onClick={() => setSendType("instant")}
+                  className="flex-1"
+                >
+                  <Send className="h-4 w-4 mr-2" />
+                  Instantâneo
+                </Button>
+                <Button
+                  type="button"
+                  variant={sendType === "scheduled" ? "default" : "outline"}
+                  onClick={() => setSendType("scheduled")}
+                  className="flex-1"
+                >
+                  <Clock className="h-4 w-4 mr-2" />
+                  Agendado
+                </Button>
+              </div>
             </div>
 
             <div>
-              <Label htmlFor="groups">Selecionar Grupos</Label>
-              <Select>
-                <SelectTrigger id="groups">
-                  <SelectValue placeholder="Escolha os grupos destinatários" />
-                </SelectTrigger>
-                <SelectContent>
+              <Label>Selecionar Grupos</Label>
+              <Card className="p-4 mt-2 max-h-48 overflow-y-auto bg-secondary/20">
+                <div className="space-y-3">
                   {mockGroups.map((group) => (
-                    <SelectItem key={group.id} value={group.id}>
-                      {group.name} ({group.members} membros)
-                    </SelectItem>
+                    <div key={group.id} className="flex items-center space-x-2">
+                      <Checkbox
+                        id={group.id}
+                        checked={selectedGroups.includes(group.id)}
+                        onCheckedChange={() => toggleGroup(group.id)}
+                      />
+                      <label
+                        htmlFor={group.id}
+                        className="flex-1 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                      >
+                        {group.name}
+                        <span className="text-muted-foreground ml-2">({group.members} membros)</span>
+                      </label>
+                    </div>
                   ))}
-                </SelectContent>
-              </Select>
-              <div className="flex flex-wrap gap-2 mt-2">
-                {selectedGroups.length > 0 && selectedGroups.map((id) => {
-                  const group = mockGroups.find(g => g.id === id);
-                  return (
-                    <Badge key={id} variant="secondary">
-                      {group?.name}
-                    </Badge>
-                  );
-                })}
-              </div>
+                </div>
+              </Card>
+              {selectedGroups.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {selectedGroups.map((id) => {
+                    const group = mockGroups.find(g => g.id === id);
+                    return (
+                      <Badge key={id} variant="secondary" className="gap-1">
+                        {group?.name}
+                        <X
+                          className="h-3 w-3 cursor-pointer hover:text-destructive"
+                          onClick={() => toggleGroup(id)}
+                        />
+                      </Badge>
+                    );
+                  })}
+                </div>
+              )}
             </div>
 
             <div>
@@ -157,19 +208,33 @@ export default function Messages() {
               Templates Rápidos
             </h3>
             <div className="space-y-2">
-              <Button variant="outline" className="w-full justify-start" size="sm">
-                Boas-vindas
-              </Button>
-              <Button variant="outline" className="w-full justify-start" size="sm">
-                Promoção
-              </Button>
-              <Button variant="outline" className="w-full justify-start" size="sm">
-                Lembrete
-              </Button>
-              <Button variant="ghost" className="w-full justify-start" size="sm">
-                <Plus className="h-4 w-4 mr-2" />
-                Criar Template
-              </Button>
+              {templates.map((template) => (
+                <Button
+                  key={template.id}
+                  variant="outline"
+                  className="w-full justify-start"
+                  size="sm"
+                  onClick={() => applyTemplate(template.content)}
+                >
+                  {template.name}
+                </Button>
+              ))}
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="ghost" className="w-full justify-start" size="sm">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Criar Template
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Criar Novo Template</DialogTitle>
+                    <DialogDescription>
+                      Funcionalidade em desenvolvimento
+                    </DialogDescription>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
             </div>
           </Card>
 
