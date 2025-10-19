@@ -9,28 +9,29 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { toast } from "sonner";
 
 const allBots = [
-  { name: "Bot Atendimento", status: "active" as const, groups: 45, contacts: 1200, messages: 5400 },
-  { name: "Bot Marketing", status: "active" as const, groups: 32, contacts: 890, messages: 3200 },
-  { name: "Bot Suporte", status: "error" as const, groups: 28, contacts: 650, messages: 2100 },
-  { name: "Bot Vendas", status: "active" as const, groups: 51, contacts: 1500, messages: 6800 },
-  { name: "Bot Newsletter", status: "inactive" as const, groups: 15, contacts: 420, messages: 1200 },
-  { name: "Bot FAQ", status: "active" as const, groups: 38, contacts: 980, messages: 4100 },
+  { name: "Atendente IA ChatGPT", status: "active" as const, groups: 0, contacts: 0, messages: 0 },
+  { name: "WhatsFilter", status: "active" as const, groups: 0, contacts: 0, messages: 0 },
+  { name: "Exporter Group", status: "active" as const, groups: 0, contacts: 0, messages: 0 },
+  { name: "SDExporter", status: "active" as const, groups: 0, contacts: 0, messages: 0 },
+  { name: "Exporter Chat", status: "active" as const, groups: 0, contacts: 0, messages: 0 },
+  { name: "SDExporter UI", status: "active" as const, groups: 0, contacts: 0, messages: 0 },
+  { name: "WhatsAppOS", status: "active" as const, groups: 0, contacts: 0, messages: 0 },
 ];
 
 const Bots = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [newBotName, setNewBotName] = useState("");
-  const [newBotType, setNewBotType] = useState("vendas");
+  const [newBotType, setNewBotType] = useState("ia");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleCreateBot = () => {
     if (!newBotName.trim()) {
-      toast.error("Digite um nome para o bot");
+      toast.error("Digite um nome para a ferramenta");
       return;
     }
-    toast.success(`Bot "${newBotName}" criado com sucesso!`);
+    toast.success(`Ferramenta "${newBotName}" criada com sucesso!`);
     setNewBotName("");
-    setNewBotType("vendas");
+    setNewBotType("ia");
     setIsDialogOpen(false);
   };
 
@@ -42,46 +43,49 @@ const Bots = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Gerenciar Bots</h1>
+          <h1 className="text-3xl font-bold text-foreground">Ferramentas WhatsApp</h1>
           <p className="mt-1 text-muted-foreground">
-            Controle e monitore todos os seus bots
+            Acesse e configure todas as ferramentas disponíveis
           </p>
         </div>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-glow">
               <Bot className="mr-2 h-4 w-4" />
-              Adicionar Bot
+              Adicionar Ferramenta
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Criar Novo Bot</DialogTitle>
+              <DialogTitle>Adicionar Nova Ferramenta</DialogTitle>
               <DialogDescription>
-                Configure as informações básicas do seu bot
+                Configure as informações básicas da sua ferramenta WhatsApp
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4 py-4">
               <div className="space-y-2">
-                <Label htmlFor="bot-name">Nome do Bot</Label>
+                <Label htmlFor="bot-name">Nome da Ferramenta</Label>
                 <Input
                   id="bot-name"
-                  placeholder="Ex: Bot Atendimento"
+                  placeholder="Ex: Atendente IA ChatGPT"
                   value={newBotName}
                   onChange={(e) => setNewBotName(e.target.value)}
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="bot-type">Tipo do Bot</Label>
+                <Label htmlFor="bot-type">Tipo de Ferramenta</Label>
                 <Select value={newBotType} onValueChange={setNewBotType}>
                   <SelectTrigger id="bot-type">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="vendas">Bot de Vendas</SelectItem>
-                    <SelectItem value="suporte">Bot de Suporte</SelectItem>
-                    <SelectItem value="marketing">Bot de Marketing</SelectItem>
-                    <SelectItem value="custom">Bot Personalizado</SelectItem>
+                    <SelectItem value="ia">Atendente IA ChatGPT</SelectItem>
+                    <SelectItem value="filter">WhatsFilter</SelectItem>
+                    <SelectItem value="group">Exporter Group</SelectItem>
+                    <SelectItem value="contacts">SDExporter</SelectItem>
+                    <SelectItem value="chat">Exporter Chat</SelectItem>
+                    <SelectItem value="ui">SDExporter UI</SelectItem>
+                    <SelectItem value="mass">WhatsAppOS</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -91,7 +95,7 @@ const Bots = () => {
                 Cancelar
               </Button>
               <Button onClick={handleCreateBot}>
-                Criar Bot
+                Criar Ferramenta
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -102,7 +106,7 @@ const Bots = () => {
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
-            placeholder="Buscar bots..."
+            placeholder="Buscar ferramentas..."
             className="pl-10 bg-card border-border"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -121,7 +125,7 @@ const Bots = () => {
           ))
         ) : (
           <div className="col-span-full text-center py-12">
-            <p className="text-muted-foreground">Nenhum bot encontrado</p>
+            <p className="text-muted-foreground">Nenhuma ferramenta encontrada</p>
           </div>
         )}
       </div>
