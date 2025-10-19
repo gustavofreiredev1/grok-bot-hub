@@ -16,6 +16,13 @@ import FlowEditor from "./pages/FlowEditor";
 import UserGuide from "./pages/UserGuide";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
+import AIAttendant from "./pages/tools/AIAttendant";
+import WhatsFilter from "./pages/tools/WhatsFilter";
+import ExporterGroup from "./pages/tools/ExporterGroup";
+import SDExporter from "./pages/tools/SDExporter";
+import ExporterChat from "./pages/tools/ExporterChat";
+import SDExporterUI from "./pages/tools/SDExporterUI";
+import WhatsAppOS from "./pages/tools/WhatsAppOS";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +45,13 @@ const App = () => (
             <Route path="/flow-editor" element={<FlowEditor />} />
             <Route path="/guide" element={<UserGuide />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/tools/ai-attendant" element={<AIAttendant />} />
+            <Route path="/tools/whatsfilter" element={<WhatsFilter />} />
+            <Route path="/tools/exporter-group" element={<ExporterGroup />} />
+            <Route path="/tools/sdexporter" element={<SDExporter />} />
+            <Route path="/tools/exporter-chat" element={<ExporterChat />} />
+            <Route path="/tools/sdexporter-ui" element={<SDExporterUI />} />
+            <Route path="/tools/whatsappos" element={<WhatsAppOS />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

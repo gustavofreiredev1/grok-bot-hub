@@ -2,6 +2,7 @@ import { Bot, Users, MessageSquare, MoreVertical } from "lucide-react";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
+import { useNavigate } from "react-router-dom";
 
 interface BotCardProps {
   name: string;
@@ -18,10 +19,27 @@ const statusConfig = {
 };
 
 export const BotCard = ({ name, status, groups, contacts, messages }: BotCardProps) => {
+  const navigate = useNavigate();
+  
+  const getToolRoute = (toolName: string) => {
+    const routes: Record<string, string> = {
+      "Atendente IA ChatGPT": "/tools/ai-attendant",
+      "WhatsFilter": "/tools/whatsfilter",
+      "Exporter Group": "/tools/exporter-group",
+      "SDExporter": "/tools/sdexporter",
+      "Exporter Chat": "/tools/exporter-chat",
+      "SDExporter UI": "/tools/sdexporter-ui",
+      "WhatsAppOS": "/tools/whatsappos",
+    };
+    return routes[toolName] || "/bots";
+  };
   const statusInfo = statusConfig[status];
 
   return (
-    <Card className="bg-gradient-card border-border p-6 shadow-md transition-all hover:shadow-lg hover:shadow-glow">
+    <Card 
+      className="bg-gradient-card border-border p-6 shadow-md transition-all hover:shadow-lg hover:shadow-glow cursor-pointer"
+      onClick={() => navigate(getToolRoute(name))}
+    >
       <div className="flex items-start justify-between">
         <div className="flex items-start gap-3">
           <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
