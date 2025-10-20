@@ -14,7 +14,160 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      bot_flows: {
+        Row: {
+          bot_id: string
+          created_at: string | null
+          flow_data: Json
+          id: string
+          updated_at: string | null
+          version: number | null
+        }
+        Insert: {
+          bot_id: string
+          created_at?: string | null
+          flow_data: Json
+          id?: string
+          updated_at?: string | null
+          version?: number | null
+        }
+        Update: {
+          bot_id?: string
+          created_at?: string | null
+          flow_data?: Json
+          id?: string
+          updated_at?: string | null
+          version?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bot_flows_bot_id_fkey"
+            columns: ["bot_id"]
+            isOneToOne: false
+            referencedRelation: "bots"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bots: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          updated_at: string | null
+          user_id: string
+          whatsapp_api_key: string | null
+          whatsapp_phone_number: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          updated_at?: string | null
+          user_id: string
+          whatsapp_api_key?: string | null
+          whatsapp_phone_number?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          updated_at?: string | null
+          user_id?: string
+          whatsapp_api_key?: string | null
+          whatsapp_phone_number?: string | null
+        }
+        Relationships: []
+      }
+      mass_messages: {
+        Row: {
+          bot_id: string | null
+          created_at: string | null
+          id: string
+          message_content: string
+          recipients_count: number
+          sent_count: number | null
+          status: string | null
+          user_id: string
+        }
+        Insert: {
+          bot_id?: string | null
+          created_at?: string | null
+          id?: string
+          message_content: string
+          recipients_count: number
+          sent_count?: number | null
+          status?: string | null
+          user_id: string
+        }
+        Update: {
+          bot_id?: string | null
+          created_at?: string | null
+          id?: string
+          message_content?: string
+          recipients_count?: number
+          sent_count?: number | null
+          status?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mass_messages_bot_id_fkey"
+            columns: ["bot_id"]
+            isOneToOne: false
+            referencedRelation: "bots"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          bots_created: number | null
+          created_at: string | null
+          daily_messages_sent: number | null
+          email: string
+          full_name: string | null
+          id: string
+          last_message_reset: string | null
+          max_daily_messages: number | null
+          max_free_bots: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          bots_created?: number | null
+          created_at?: string | null
+          daily_messages_sent?: number | null
+          email: string
+          full_name?: string | null
+          id?: string
+          last_message_reset?: string | null
+          max_daily_messages?: number | null
+          max_free_bots?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          bots_created?: number | null
+          created_at?: string | null
+          daily_messages_sent?: number | null
+          email?: string
+          full_name?: string | null
+          id?: string
+          last_message_reset?: string | null
+          max_daily_messages?: number | null
+          max_free_bots?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
