@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { Send, Upload, Calendar, FileText, BookOpen } from "lucide-react";
 
 const navigation = [
-  { name: "Dashboard", href: "/", icon: LayoutDashboard },
+  { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Bots", href: "/bots", icon: Bot },
   { name: "Mensagens", href: "/messages", icon: Send },
   { name: "Upload", href: "/upload", icon: Upload },
