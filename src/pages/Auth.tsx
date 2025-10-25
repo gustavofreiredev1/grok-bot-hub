@@ -39,7 +39,7 @@ const Auth = () => {
     
     setLoading(false);
     toast.success(isLogin ? "Login realizado com sucesso!" : "Conta criada com sucesso!");
-    navigate("/");
+    navigate("/dashboard");
   };
 
   const handleGoogleAuth = () => {
