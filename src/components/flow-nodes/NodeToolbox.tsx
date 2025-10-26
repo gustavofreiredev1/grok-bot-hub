@@ -1,5 +1,16 @@
 import { Card } from "@/components/ui/card";
-import { PlayCircle, MessageSquare, GitBranch, Zap, StopCircle } from "lucide-react";
+import { 
+  PlayCircle, 
+  MessageSquare, 
+  GitBranch, 
+  Zap, 
+  StopCircle,
+  Mic,
+  Image,
+  Video,
+  Clock,
+  Webhook
+} from "lucide-react";
 
 const nodeItems = [
   {
@@ -13,8 +24,36 @@ const nodeItems = [
     type: "message",
     label: "Mensagem",
     icon: MessageSquare,
-    description: "Enviar mensagem no WhatsApp",
+    description: "Enviar mensagem de texto",
     color: "text-blue-500",
+  },
+  {
+    type: "audio",
+    label: "Áudio",
+    icon: Mic,
+    description: "Enviar áudio no WhatsApp",
+    color: "text-purple-500",
+  },
+  {
+    type: "image",
+    label: "Imagem",
+    icon: Image,
+    description: "Enviar imagem no WhatsApp",
+    color: "text-pink-500",
+  },
+  {
+    type: "video",
+    label: "Vídeo",
+    icon: Video,
+    description: "Enviar vídeo no WhatsApp",
+    color: "text-orange-500",
+  },
+  {
+    type: "delay",
+    label: "Delay",
+    icon: Clock,
+    description: "Aguardar tempo específico",
+    color: "text-cyan-500",
   },
   {
     type: "condition",
@@ -24,11 +63,18 @@ const nodeItems = [
     color: "text-yellow-500",
   },
   {
+    type: "webhook",
+    label: "Webhook",
+    icon: Webhook,
+    description: "Chamar API externa",
+    color: "text-indigo-500",
+  },
+  {
     type: "action",
     label: "Ação",
     icon: Zap,
-    description: "API, delay ou salvar dados",
-    color: "text-purple-500",
+    description: "Salvar dados ou executar ação",
+    color: "text-violet-500",
   },
   {
     type: "end",

@@ -4,7 +4,7 @@ import { GitBranch } from "lucide-react";
 
 const ConditionNode = ({ data }: NodeProps) => {
   return (
-    <div className="bg-card border-2 border-yellow-500 rounded-lg shadow-lg p-4 min-w-[180px]">
+    <div className="bg-card border-2 border-yellow-500 rounded-lg shadow-lg p-4 min-w-[180px] max-w-[250px]">
       <Handle
         type="target"
         position={Position.Top}
@@ -14,7 +14,9 @@ const ConditionNode = ({ data }: NodeProps) => {
         <GitBranch className="h-5 w-5 text-yellow-500" />
         <div className="font-semibold text-foreground text-sm">Condição</div>
       </div>
-      <div className="text-xs text-muted-foreground mb-3">{data.label}</div>
+      <div className="text-xs text-muted-foreground mb-3 line-clamp-2">
+        {data.variable ? `${data.variable} ${data.operator || "=="} ${data.value || ""}` : "Clique 2x para configurar"}
+      </div>
       <div className="flex justify-between">
         <div className="text-xs text-green-400 font-medium">Sim</div>
         <div className="text-xs text-red-400 font-medium">Não</div>
