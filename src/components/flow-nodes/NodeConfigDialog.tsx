@@ -46,15 +46,31 @@ export const NodeConfigDialog = ({ isOpen, onClose, nodeType, nodeData, onSave }
                 onChange={(e) => setConfig({ ...config, message: e.target.value })}
                 rows={4}
               />
+              <p className="text-xs text-muted-foreground mt-1">
+                Use variáveis: {`{{nome}}`}, {`{{telefone}}`}, {`{{email}}`}
+              </p>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="caption">Legenda (opcional)</Label>
-              <Input
-                id="caption"
-                placeholder="Legenda para a mensagem"
-                value={config.caption || ""}
-                onChange={(e) => setConfig({ ...config, caption: e.target.value })}
-              />
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="delay">Delay antes (seg)</Label>
+                <Input
+                  id="delay"
+                  type="number"
+                  placeholder="0"
+                  value={config.delay || ""}
+                  onChange={(e) => setConfig({ ...config, delay: e.target.value })}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="typing">Simulação digitação (seg)</Label>
+                <Input
+                  id="typing"
+                  type="number"
+                  placeholder="0"
+                  value={config.typing || ""}
+                  onChange={(e) => setConfig({ ...config, typing: e.target.value })}
+                />
+              </div>
             </div>
           </>
         );
@@ -304,7 +320,7 @@ export const NodeConfigDialog = ({ isOpen, onClose, nodeType, nodeData, onSave }
         return (
           <>
             <div className="space-y-2">
-              <Label htmlFor="prompt">Prompt para IA</Label>
+              <Label htmlFor="prompt">Prompt do Sistema</Label>
               <Textarea
                 id="prompt"
                 placeholder="Você é um assistente útil que..."
@@ -312,6 +328,9 @@ export const NodeConfigDialog = ({ isOpen, onClose, nodeType, nodeData, onSave }
                 onChange={(e) => setConfig({ ...config, prompt: e.target.value })}
                 rows={4}
               />
+              <p className="text-xs text-muted-foreground mt-1">
+                Defina como a IA deve se comportar e responder
+              </p>
             </div>
             <div className="space-y-2">
               <Label htmlFor="aiModel">Modelo de IA</Label>
@@ -321,11 +340,38 @@ export const NodeConfigDialog = ({ isOpen, onClose, nodeType, nodeData, onSave }
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="gpt-4">GPT-4</SelectItem>
-                  <SelectItem value="gpt-3.5">GPT-3.5</SelectItem>
-                  <SelectItem value="gemini-pro">Gemini Pro</SelectItem>
-                  <SelectItem value="claude">Claude</SelectItem>
+                  <SelectItem value="gpt-3.5-turbo">GPT-3.5 Turbo</SelectItem>
+                  <SelectItem value="gemini-pro">Google Gemini Pro</SelectItem>
+                  <SelectItem value="claude-3">Claude 3</SelectItem>
                 </SelectContent>
               </Select>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="temperature">Criatividade</Label>
+                <Input
+                  id="temperature"
+                  type="number"
+                  step="0.1"
+                  min="0"
+                  max="2"
+                  placeholder="0.7"
+                  value={config.temperature || "0.7"}
+                  onChange={(e) => setConfig({ ...config, temperature: e.target.value })}
+                />
+                <p className="text-xs text-muted-foreground">0 = preciso, 2 = criativo</p>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="maxTokens">Tamanho máximo</Label>
+                <Input
+                  id="maxTokens"
+                  type="number"
+                  placeholder="500"
+                  value={config.maxTokens || ""}
+                  onChange={(e) => setConfig({ ...config, maxTokens: e.target.value })}
+                />
+                <p className="text-xs text-muted-foreground">Tokens de resposta</p>
+              </div>
             </div>
           </>
         );

@@ -12,8 +12,8 @@ const navigation = [
   { name: "Agendamentos", href: "/schedule", icon: Calendar },
   { name: "Relatórios", href: "/reports", icon: FileText },
   { name: "Analytics", href: "/analytics", icon: BarChart3 },
+  { name: "Fluxos", href: "/flows", icon: Workflow },
   { name: "Automação", href: "/automation", icon: Zap },
-  { name: "Editor de Fluxos", href: "/flow-editor", icon: Workflow },
   { name: "Manual", href: "/guide", icon: BookOpen },
   { name: "Configurações", href: "/settings", icon: Settings },
 ];
