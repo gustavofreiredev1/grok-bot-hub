@@ -224,6 +224,112 @@ export const NodeConfigDialog = ({ isOpen, onClose, nodeType, nodeData, onSave }
           </>
         );
 
+      case "button":
+        return (
+          <>
+            <div className="space-y-2">
+              <Label htmlFor="message">Mensagem</Label>
+              <Textarea
+                id="message"
+                placeholder="Digite a mensagem que acompanha os botões..."
+                value={config.message || ""}
+                onChange={(e) => setConfig({ ...config, message: e.target.value })}
+                rows={3}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="buttons">Botões (um por linha)</Label>
+              <Textarea
+                id="buttons"
+                placeholder="Botão 1&#10;Botão 2&#10;Botão 3"
+                value={config.buttons?.join("\n") || ""}
+                onChange={(e) => setConfig({ ...config, buttons: e.target.value.split("\n").filter(b => b.trim()) })}
+                rows={5}
+              />
+            </div>
+          </>
+        );
+
+      case "list":
+        return (
+          <>
+            <div className="space-y-2">
+              <Label htmlFor="title">Título da Lista</Label>
+              <Input
+                id="title"
+                placeholder="Escolha uma opção"
+                value={config.title || ""}
+                onChange={(e) => setConfig({ ...config, title: e.target.value })}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="listItems">Itens (um por linha)</Label>
+              <Textarea
+                id="listItems"
+                placeholder="Item 1&#10;Item 2&#10;Item 3"
+                value={config.listItems?.join("\n") || ""}
+                onChange={(e) => setConfig({ ...config, listItems: e.target.value.split("\n").filter(i => i.trim()) })}
+                rows={6}
+              />
+            </div>
+          </>
+        );
+
+      case "input":
+        return (
+          <>
+            <div className="space-y-2">
+              <Label htmlFor="message">Mensagem para o Usuário</Label>
+              <Textarea
+                id="message"
+                placeholder="Por favor, digite seu nome..."
+                value={config.message || ""}
+                onChange={(e) => setConfig({ ...config, message: e.target.value })}
+                rows={3}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="variable">Salvar Resposta em Variável</Label>
+              <Input
+                id="variable"
+                placeholder="nome_usuario"
+                value={config.variable || ""}
+                onChange={(e) => setConfig({ ...config, variable: e.target.value })}
+              />
+            </div>
+          </>
+        );
+
+      case "ai":
+        return (
+          <>
+            <div className="space-y-2">
+              <Label htmlFor="prompt">Prompt para IA</Label>
+              <Textarea
+                id="prompt"
+                placeholder="Você é um assistente útil que..."
+                value={config.prompt || ""}
+                onChange={(e) => setConfig({ ...config, prompt: e.target.value })}
+                rows={4}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="aiModel">Modelo de IA</Label>
+              <Select value={config.aiModel || "gpt-4"} onValueChange={(value) => setConfig({ ...config, aiModel: value })}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="gpt-4">GPT-4</SelectItem>
+                  <SelectItem value="gpt-3.5">GPT-3.5</SelectItem>
+                  <SelectItem value="gemini-pro">Gemini Pro</SelectItem>
+                  <SelectItem value="claude">Claude</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </>
+        );
+
       case "action":
         return (
           <>

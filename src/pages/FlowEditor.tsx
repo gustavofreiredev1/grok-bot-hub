@@ -40,8 +40,13 @@ import ConditionNode from "@/components/flow-nodes/ConditionNode";
 import ActionNode from "@/components/flow-nodes/ActionNode";
 import WebhookNode from "@/components/flow-nodes/WebhookNode";
 import EndNode from "@/components/flow-nodes/EndNode";
+import ButtonNode from "@/components/flow-nodes/ButtonNode";
+import ListNode from "@/components/flow-nodes/ListNode";
+import InputNode from "@/components/flow-nodes/InputNode";
+import AINode from "@/components/flow-nodes/AINode";
 import NodeToolbox from "@/components/flow-nodes/NodeToolbox";
 import { NodeConfigDialog } from "@/components/flow-nodes/NodeConfigDialog";
+import { FlowPropertiesPanel } from "@/components/flow-nodes/FlowPropertiesPanel";
 import { useFlowManagement } from "@/hooks/useFlowManagement";
 
 const nodeTypes = {
@@ -55,6 +60,10 @@ const nodeTypes = {
   action: ActionNode,
   webhook: WebhookNode,
   end: EndNode,
+  button: ButtonNode,
+  list: ListNode,
+  input: InputNode,
+  ai: AINode,
 };
 
 const initialNodes: Node[] = [
@@ -73,6 +82,7 @@ const FlowEditorContent = () => {
   const [selectedNode, setSelectedNode] = useState<Node | null>(null);
   const [isConfigDialogOpen, setIsConfigDialogOpen] = useState(false);
   const [isFlowListOpen, setIsFlowListOpen] = useState(false);
+  const [showPropertiesPanel, setShowPropertiesPanel] = useState(false);
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
   const [reactFlowInstance, setReactFlowInstance] = useState<any>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -125,6 +135,11 @@ const FlowEditorContent = () => {
     },
     [reactFlowInstance, setNodes]
   );
+
+  const onNodeClick: NodeMouseHandler = useCallback((event, node) => {
+    setSelectedNode(node);
+    setShowPropertiesPanel(true);
+  }, []);
 
   const onNodeDoubleClick: NodeMouseHandler = useCallback((event, node) => {
     if (node.type !== "start" && node.type !== "end") {
@@ -334,6 +349,7 @@ const FlowEditorContent = () => {
             onInit={setReactFlowInstance}
             onDrop={onDrop}
             onDragOver={onDragOver}
+            onNodeClick={onNodeClick}
             onNodeDoubleClick={onNodeDoubleClick}
             nodeTypes={nodeTypes}
             fitView
@@ -365,6 +381,27 @@ const FlowEditorContent = () => {
             </Panel>
           </ReactFlow>
         </div>
+
+        {/* Properties Panel */}
+        {showPropertiesPanel && (
+          <FlowPropertiesPanel
+            selectedNode={selectedNode}
+            onClose={() => {
+              setShowPropertiesPanel(false);
+              setSelectedNode(null);
+            }}
+            onUpdate={(data) => {
+              if (!selectedNode) return;
+              setNodes((nds) =>
+                nds.map((node) =>
+                  node.id === selectedNode.id
+                    ? { ...node, data }
+                    : node
+                )
+              );
+            }}
+          />
+        )}
       </div>
 
       {/* Node Configuration Dialog */}
@@ -377,12 +414,13 @@ const FlowEditorContent = () => {
       />
 
       {/* Tutorial Hint */}
-      <Card className="absolute bottom-24 left-80 max-w-sm bg-card border-border p-4 m-4 shadow-lg">
-        <p className="text-sm text-muted-foreground">
-          💡 <strong>Dica:</strong> Arraste nós da barra lateral para o canvas, 
-          conecte-os e <strong>clique duas vezes</strong> em um nó para configurá-lo.
-        </p>
-      </Card>
+      {!showPropertiesPanel && (
+        <Card className="absolute bottom-24 left-80 max-w-sm bg-card border-border p-4 m-4 shadow-lg">
+          <p className="text-sm text-muted-foreground">
+            💡 <strong>Dica:</strong> Arraste nós da barra lateral, <strong>clique</strong> para editar no painel lateral ou <strong>clique duas vezes</strong> para configuração completa.
+          </p>
+        </Card>
+      )}
     </div>
   );
 };
