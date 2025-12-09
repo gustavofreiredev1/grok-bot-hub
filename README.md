@@ -78,6 +78,7 @@ A aplicação estará disponível em:
 👉 http://localhost:8080
 
 ## 🏗️ Estrutura do Projeto
+```
 src/
 ├── components/          # Componentes reutilizáveis
 │   ├── ui/              # Componentes shadcn/ui
@@ -100,7 +101,7 @@ src/
 ├── mocks/               # Dados mockados
 │   └── mockBots.ts
 └── App.tsx              # Root + rotas
-
+```
 ## 🔐 Autenticação
 
 Atualmente o sistema funciona com autenticação mockada para fins de teste e demonstração.
@@ -144,11 +145,12 @@ Temas customizáveis
 Painel avançado com IA para análise de bots
 
 ## 📝 Scripts Disponíveis
+```
 npm run dev          # Ambiente de desenvolvimento
 npm run build        # Build de produção
 npm run preview      # Preview local
 npm run lint         # Verificação de código
-
+```
 ## 🌐 Deploy
 
 O projeto pode ser publicado facilmente usando:
