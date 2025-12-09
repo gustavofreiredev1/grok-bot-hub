@@ -1,73 +1,172 @@
-# Welcome to your Lovable project
+🤖 GROK BOT HUB
 
-## Project info
+Central moderna, poderosa e intuitiva para gerenciamento de bots — inspirada no design futurista do Grok.
 
-**URL**: https://lovable.dev/projects/3941a662-2b85-4fde-9620-bc2a32cb226c
+Uma plataforma web construída com React + Vite + Tailwind CSS, criada para organizar, visualizar, testar e operar múltiplos bots em um único hub elegante e minimalista.
 
-## How can I edit this code?
+✨ Funcionalidades
 
-There are several ways of editing your application.
+Painel Futurista: Métricas rápidas, visão geral do sistema e navegação ultra fluida
 
-**Use Lovable**
+Hub de Bots: Organização inteligente de múltiplos bots em cartões modernos
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/3941a662-2b85-4fde-9620-bc2a32cb226c) and start prompting.
+Criação e Gerenciamento: Adicione, edite e exclua bots facilmente
 
-Changes made via Lovable will be committed automatically to this repo.
+Simulação de Chat: Teste interações em tempo real dentro do próprio sistema
 
-**Use your preferred IDE**
+Assistente Grok-Like: Interface inspirada no design do Grok para máxima produtividade
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+Listagem Inteligente: Bots, ações e sessões visíveis com design limpo e responsivo
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+Tema Dark Neon: Interface premium com foco em legibilidade e estética high-tech
 
-Follow these steps:
+🎨 Design System
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+Tema: Dark Mode neon — inspirado no Grok
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+Cores:
 
-# Step 3: Install the necessary dependencies.
-npm i
+Fundo: #0a0a0a
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+Cards: #1a1a1a
+
+Accent: Azul ciano neon #3b82f6
+
+Tipografia: Inter
+
+Animações: Framer Motion com micro-interações suaves
+
+Layout: Clean, futurista, totalmente responsivo (mobile-first)
+
+🚀 Tecnologias Utilizadas
+
+React 18 (Hooks + SPA Architecture)
+
+Vite (dev ultra rápido)
+
+TypeScript
+
+Tailwind CSS
+
+shadcn/ui (UI moderna e escalável)
+
+Framer Motion (animações premium)
+
+React Router
+
+Zustand (estado global leve e eficiente)
+
+Recharts (gráficos profissionais)
+
+Lovable.dev para prototipação acelerada
+
+📦 Instalação
+# Clone o repositório
+git clone https://github.com/gustavofreiredev1/grok-bot-hub.git
+
+# Entre no diretório
+cd grok-bot-hub
+
+# Instale as dependências
+npm install
+
+# Execute o servidor de desenvolvimento
 npm run dev
-```
 
-**Edit a file directly in GitHub**
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+A aplicação estará disponível em:
+👉 http://localhost:8080
 
-**Use GitHub Codespaces**
+🏗️ Estrutura do Projeto
+src/
+├── components/          # Componentes reutilizáveis
+│   ├── ui/              # Componentes shadcn/ui
+│   ├── BotCard.tsx
+│   ├── Header.tsx
+│   ├── Sidebar.tsx
+│   └── ChatSimulator.tsx
+├── layouts/             # Layouts principais
+│   ├── MainLayout.tsx
+│   └── MinimalLayout.tsx
+├── pages/               # Páginas do Hub
+│   ├── Home.tsx
+│   ├── Bots.tsx
+│   ├── CreateBot.tsx
+│   ├── Chat.tsx
+│   ├── Settings.tsx
+│   └── Support.tsx
+├── store/               # Estado global (Zustand)
+│   └── botStore.ts
+├── mocks/               # Dados mockados
+│   └── mockBots.ts
+└── App.tsx              # Root + rotas
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+🔐 Autenticação
 
-## What technologies are used for this project?
+Atualmente o sistema funciona com autenticação mockada para fins de teste e demonstração.
 
-This project is built with:
+Login simples
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Persistência via localStorage
 
-## How can I deploy this project?
+Ótimo para prototipação de UX/UI
 
-Simply open [Lovable](https://lovable.dev/projects/3941a662-2b85-4fde-9620-bc2a32cb226c) and click on Share -> Publish.
+📊 Dados Mockados
 
-## Can I connect a custom domain to my Lovable project?
+Para facilitar a demonstração:
 
-Yes, you can!
+Lista mockada de bots de exemplo
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Métricas e gráficos gerados dinamicamente
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Chats simulados
+
+Informações fictícias de status e uptime
+
+🎯 Próximos Passos / Roadmap
+
+Integração com API real de bots
+
+Backend dedicado (Node + PostgreSQL)
+
+Suporte para múltiplas plataformas
+
+Sistema de Webhooks
+
+Notificações realtime
+
+Export de relatórios (PDF / CSV)
+
+Multi-idioma (i18n)
+
+Temas customizáveis
+
+Painel avançado com IA para análise de bots
+
+📝 Scripts Disponíveis
+npm run dev          # Ambiente de desenvolvimento
+npm run build        # Build de produção
+npm run preview      # Preview local
+npm run lint         # Verificação de código
+
+🌐 Deploy
+
+O projeto pode ser publicado facilmente usando:
+
+Lovable Publish
+
+Vercel
+
+Netlify
+
+Cloudflare Pages
+
+📄 Licença
+
+Este projeto é um protótipo desenvolvido com ❤️ e criatividade no Lovable.dev.
+Uso livre para estudo, melhoria e expansão.
+
+🤝 Contribuindo
+
+Pull Requests são bem-vindos!
+Se quiser propor novas funcionalidades, abra uma issue antes para discutirmos.
