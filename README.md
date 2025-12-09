@@ -1,10 +1,10 @@
-🤖 GROK BOT HUB
+# 🤖 GROK BOT HUB
 
-Central moderna, poderosa e intuitiva para gerenciamento de bots — inspirada no design futurista do Grok.
+**Central moderna, poderosa e intuitiva para gerenciamento de bots — inspirada no design futurista do Grok.**
 
 Uma plataforma web construída com React + Vite + Tailwind CSS, criada para organizar, visualizar, testar e operar múltiplos bots em um único hub elegante e minimalista.
 
-✨ Funcionalidades
+## ✨ Funcionalidades
 
 Painel Futurista: Métricas rápidas, visão geral do sistema e navegação ultra fluida
 
@@ -20,7 +20,7 @@ Listagem Inteligente: Bots, ações e sessões visíveis com design limpo e resp
 
 Tema Dark Neon: Interface premium com foco em legibilidade e estética high-tech
 
-🎨 Design System
+## 🎨 Design System
 
 Tema: Dark Mode neon — inspirado no Grok
 
@@ -38,7 +38,7 @@ Animações: Framer Motion com micro-interações suaves
 
 Layout: Clean, futurista, totalmente responsivo (mobile-first)
 
-🚀 Tecnologias Utilizadas
+##🚀 Tecnologias Utilizadas
 
 React 18 (Hooks + SPA Architecture)
 
@@ -60,7 +60,7 @@ Recharts (gráficos profissionais)
 
 Lovable.dev para prototipação acelerada
 
-📦 Instalação
+## 📦 Instalação
 # Clone o repositório
 git clone https://github.com/gustavofreiredev1/grok-bot-hub.git
 
@@ -77,7 +77,7 @@ npm run dev
 A aplicação estará disponível em:
 👉 http://localhost:8080
 
-🏗️ Estrutura do Projeto
+## 🏗️ Estrutura do Projeto
 src/
 ├── components/          # Componentes reutilizáveis
 │   ├── ui/              # Componentes shadcn/ui
@@ -101,7 +101,7 @@ src/
 │   └── mockBots.ts
 └── App.tsx              # Root + rotas
 
-🔐 Autenticação
+## 🔐 Autenticação
 
 Atualmente o sistema funciona com autenticação mockada para fins de teste e demonstração.
 
@@ -111,7 +111,7 @@ Persistência via localStorage
 
 Ótimo para prototipação de UX/UI
 
-📊 Dados Mockados
+## 📊 Dados Mockados
 
 Para facilitar a demonstração:
 
@@ -123,7 +123,7 @@ Chats simulados
 
 Informações fictícias de status e uptime
 
-🎯 Próximos Passos / Roadmap
+## 🎯 Próximos Passos / Roadmap
 
 Integração com API real de bots
 
@@ -143,13 +143,13 @@ Temas customizáveis
 
 Painel avançado com IA para análise de bots
 
-📝 Scripts Disponíveis
+## 📝 Scripts Disponíveis
 npm run dev          # Ambiente de desenvolvimento
 npm run build        # Build de produção
 npm run preview      # Preview local
 npm run lint         # Verificação de código
 
-🌐 Deploy
+## 🌐 Deploy
 
 O projeto pode ser publicado facilmente usando:
 
@@ -161,12 +161,12 @@ Netlify
 
 Cloudflare Pages
 
-📄 Licença
+## 📄 Licença
 
 Este projeto é um protótipo desenvolvido com ❤️ e criatividade no Lovable.dev.
 Uso livre para estudo, melhoria e expansão.
 
-🤝 Contribuindo
+## 🤝 Contribuindo
 
 Pull Requests são bem-vindos!
 Se quiser propor novas funcionalidades, abra uma issue antes para discutirmos.
