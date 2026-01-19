@@ -3,9 +3,15 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { Layout } from "./components/Layout";
 import Landing from "./pages/Landing";
 import Auth from "./pages/Auth";
+import Pricing from "./pages/Pricing";
+import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
+import Contact from "./pages/Contact";
 import Dashboard from "./pages/Dashboard";
 import Bots from "./pages/Bots";
 import Messages from "./pages/Messages";
@@ -31,38 +37,47 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/auth" element={<Auth />} />
-          <Route element={<Layout />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/bots" element={<Bots />} />
-            <Route path="/messages" element={<Messages />} />
-            <Route path="/upload" element={<FileUpload />} />
-            <Route path="/schedule" element={<Schedule />} />
-            <Route path="/reports" element={<Reports />} />
-            <Route path="/analytics" element={<Analytics />} />
-            <Route path="/automation" element={<Automation />} />
-            <Route path="/flows" element={<FlowsLibrary />} />
-            <Route path="/flow-editor" element={<FlowEditor />} />
-            <Route path="/guide" element={<UserGuide />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/tools/ai-attendant" element={<AIAttendant />} />
-            <Route path="/tools/whatsfilter" element={<WhatsFilter />} />
-            <Route path="/tools/exporter-group" element={<ExporterGroup />} />
-            <Route path="/tools/sdexporter" element={<SDExporter />} />
-            <Route path="/tools/exporter-chat" element={<ExporterChat />} />
-            <Route path="/tools/sdexporter-ui" element={<SDExporterUI />} />
-            <Route path="/tools/whatsappos" element={<WhatsAppOS />} />
-          </Route>
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+    <AuthProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/" element={<Landing />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/contact" element={<Contact />} />
+            
+            {/* Protected Routes */}
+            <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/bots" element={<Bots />} />
+              <Route path="/messages" element={<Messages />} />
+              <Route path="/upload" element={<FileUpload />} />
+              <Route path="/schedule" element={<Schedule />} />
+              <Route path="/reports" element={<Reports />} />
+              <Route path="/analytics" element={<Analytics />} />
+              <Route path="/flows" element={<FlowsLibrary />} />
+              <Route path="/flow-editor" element={<FlowEditor />} />
+              <Route path="/guide" element={<UserGuide />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/tools/ai-attendant" element={<AIAttendant />} />
+              <Route path="/tools/whatsfilter" element={<WhatsFilter />} />
+              <Route path="/tools/exporter-group" element={<ExporterGroup />} />
+              <Route path="/tools/sdexporter" element={<SDExporter />} />
+              <Route path="/tools/exporter-chat" element={<ExporterChat />} />
+              <Route path="/tools/sdexporter-ui" element={<SDExporterUI />} />
+              <Route path="/tools/whatsappos" element={<WhatsAppOS />} />
+            </Route>
+            
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </AuthProvider>
   </QueryClientProvider>
 );
 
