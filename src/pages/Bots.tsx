@@ -1,186 +1,86 @@
 import { useState } from "react";
-import { BotCard } from "@/components/BotCard";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Settings, Search, Filter, Plus, Trash2 } from "lucide-react";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
-import { toast } from "sonner";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-const allBots = [
-  { name: "Atendente IA ChatGPT", status: "active" as const, groups: 0, contacts: 0, messages: 0 },
-  { name: "WhatsFilter", status: "active" as const, groups: 0, contacts: 0, messages: 0 },
-  { name: "Exporter Group", status: "active" as const, groups: 0, contacts: 0, messages: 0 },
-  { name: "SDExporter", status: "active" as const, groups: 0, contacts: 0, messages: 0 },
-  { name: "Exporter Chat", status: "active" as const, groups: 0, contacts: 0, messages: 0 },
-  { name: "SDExporter UI", status: "active" as const, groups: 0, contacts: 0, messages: 0 },
-  { name: "WhatsAppOS", status: "active" as const, groups: 0, contacts: 0, messages: 0 },
-];
-
-interface WhatsAppConfig {
-  id: number;
-  name: string;
-  phoneNumber: string;
-  apiKey: string;
-}
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Search, Settings, Grid3X3, List, Zap } from "lucide-react";
+import { ToolCard } from "@/components/ToolCard";
+import { WhatsAppConfigPanel } from "@/components/WhatsAppConfigPanel";
+import { tools } from "@/data/tools";
+import { cn } from "@/lib/utils";
 
 const Bots = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [whatsappConfigs, setWhatsappConfigs] = useState<WhatsAppConfig[]>([
-    { id: 1, name: "", phoneNumber: "", apiKey: "" }
-  ]);
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
-  const handleAddNumber = () => {
-    if (whatsappConfigs.length >= 3) {
-      toast.error("Limite máximo de 3 números atingido");
-      return;
-    }
-    setWhatsappConfigs([
-      ...whatsappConfigs,
-      { id: Date.now(), name: "", phoneNumber: "", apiKey: "" }
-    ]);
-  };
+  const categories = [
+    { id: null, label: "Todas", count: tools.length },
+    { id: "automation", label: "Automação", count: tools.filter(t => t.category === "automation").length },
+    { id: "extraction", label: "Extração", count: tools.filter(t => t.category === "extraction").length },
+    { id: "validation", label: "Validação", count: tools.filter(t => t.category === "validation").length },
+    { id: "messaging", label: "Mensagens", count: tools.filter(t => t.category === "messaging").length },
+  ];
 
-  const handleRemoveNumber = (id: number) => {
-    if (whatsappConfigs.length === 1) {
-      toast.error("É necessário ter pelo menos 1 número configurado");
-      return;
-    }
-    setWhatsappConfigs(whatsappConfigs.filter(config => config.id !== id));
-  };
-
-  const handleConfigChange = (id: number, field: keyof WhatsAppConfig, value: string) => {
-    setWhatsappConfigs(whatsappConfigs.map(config =>
-      config.id === id ? { ...config, [field]: value } : config
-    ));
-  };
-
-  const handleSaveConfig = () => {
-    const hasEmptyFields = whatsappConfigs.some(
-      config => !config.name.trim() || !config.phoneNumber.trim() || !config.apiKey.trim()
-    );
+  const filteredTools = tools.filter((tool) => {
+    const matchesSearch =
+      tool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      tool.shortName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      tool.description.toLowerCase().includes(searchQuery.toLowerCase());
     
-    if (hasEmptyFields) {
-      toast.error("Preencha todos os campos de configuração");
-      return;
-    }
+    const matchesCategory = !activeCategory || tool.category === activeCategory;
     
-    toast.success("Configurações do WhatsApp salvas com sucesso!");
-    setIsDialogOpen(false);
-  };
-
-  const filteredBots = allBots.filter(bot =>
-    bot.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+    return matchesSearch && matchesCategory;
+  });
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      {/* Header */}
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Ferramentas WhatsApp</h1>
-          <p className="mt-1 text-muted-foreground">
-            Acesse e configure todas as ferramentas disponíveis
-          </p>
-        </div>
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-glow">
-              <Settings className="mr-2 h-4 w-4" />
-              Configurar Bots
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>Configurar WhatsApp para Bots</DialogTitle>
-              <DialogDescription>
-                Configure até 3 números do WhatsApp para que os bots e ferramentas funcionem corretamente
-              </DialogDescription>
-            </DialogHeader>
-            <div className="space-y-4 py-4">
-              <Tabs defaultValue="numero-1" className="w-full">
-                <TabsList className="grid w-full grid-cols-3">
-                  {whatsappConfigs.map((config, index) => (
-                    <TabsTrigger key={config.id} value={`numero-${index + 1}`}>
-                      Número {index + 1}
-                    </TabsTrigger>
-                  ))}
-                </TabsList>
-                {whatsappConfigs.map((config, index) => (
-                  <TabsContent key={config.id} value={`numero-${index + 1}`} className="space-y-4 mt-4">
-                    <div className="flex justify-between items-center mb-4">
-                      <h3 className="text-lg font-semibold">Configuração do Número {index + 1}</h3>
-                      {whatsappConfigs.length > 1 && (
-                        <Button
-                          variant="destructive"
-                          size="sm"
-                          onClick={() => handleRemoveNumber(config.id)}
-                        >
-                          <Trash2 className="h-4 w-4 mr-2" />
-                          Remover
-                        </Button>
-                      )}
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor={`name-${config.id}`}>Nome de Identificação</Label>
-                      <Input
-                        id={`name-${config.id}`}
-                        placeholder="Ex: WhatsApp Principal"
-                        value={config.name}
-                        onChange={(e) => handleConfigChange(config.id, 'name', e.target.value)}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor={`phone-${config.id}`}>Número do WhatsApp</Label>
-                      <Input
-                        id={`phone-${config.id}`}
-                        placeholder="Ex: +5511999999999"
-                        value={config.phoneNumber}
-                        onChange={(e) => handleConfigChange(config.id, 'phoneNumber', e.target.value)}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor={`api-${config.id}`}>API Key do WhatsApp</Label>
-                      <Input
-                        id={`api-${config.id}`}
-                        type="password"
-                        placeholder="Cole sua chave API aqui"
-                        value={config.apiKey}
-                        onChange={(e) => handleConfigChange(config.id, 'apiKey', e.target.value)}
-                      />
-                      <p className="text-sm text-muted-foreground">
-                        Obtenha sua API Key no painel da Evolution API ou WhatsApp Business API
-                      </p>
-                    </div>
-                  </TabsContent>
-                ))}
-              </Tabs>
-              
-              {whatsappConfigs.length < 3 && (
-                <Button
-                  variant="outline"
-                  className="w-full"
-                  onClick={handleAddNumber}
-                >
-                  <Plus className="mr-2 h-4 w-4" />
-                  Adicionar Outro Número ({whatsappConfigs.length}/3)
-                </Button>
-              )}
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
+              <Zap className="h-6 w-6 text-primary" />
             </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
-                Cancelar
-              </Button>
-              <Button onClick={handleSaveConfig}>
-                Salvar Configurações
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+            <div>
+              <h1 className="text-2xl font-bold text-foreground md:text-3xl">
+                Ferramentas
+              </h1>
+              <p className="text-sm text-muted-foreground">
+                {tools.length} ferramentas disponíveis para automação
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <WhatsAppConfigPanel
+          trigger={
+            <Button className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-glow gap-2">
+              <Settings className="h-4 w-4" />
+              Configurar WhatsApp
+            </Button>
+          }
+        />
       </div>
 
+      {/* Category Filters */}
+      <div className="flex flex-wrap gap-2">
+        {categories.map((category) => (
+          <Button
+            key={category.id ?? "all"}
+            variant={activeCategory === category.id ? "default" : "outline"}
+            size="sm"
+            onClick={() => setActiveCategory(category.id)}
+            className="gap-2"
+          >
+            {category.label}
+            <Badge variant="secondary" className="ml-1 h-5 px-1.5 text-xs">
+              {category.count}
+            </Badge>
+          </Button>
+        ))}
+      </div>
+
+      {/* Search and View Toggle */}
       <div className="flex gap-4">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -191,22 +91,66 @@ const Bots = () => {
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
-        <Button variant="outline" className="border-border">
-          <Filter className="mr-2 h-4 w-4" />
-          Filtros
-        </Button>
+        <div className="flex gap-1 bg-muted p-1 rounded-lg">
+          <Button
+            variant={viewMode === "grid" ? "default" : "ghost"}
+            size="icon"
+            className="h-8 w-8"
+            onClick={() => setViewMode("grid")}
+          >
+            <Grid3X3 className="h-4 w-4" />
+          </Button>
+          <Button
+            variant={viewMode === "list" ? "default" : "ghost"}
+            size="icon"
+            className="h-8 w-8"
+            onClick={() => setViewMode("list")}
+          >
+            <List className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {filteredBots.length > 0 ? (
-          filteredBots.map((bot) => (
-            <BotCard key={bot.name} {...bot} />
+      {/* Tools Grid/List */}
+      <div
+        className={cn(
+          "gap-6",
+          viewMode === "grid"
+            ? "grid md:grid-cols-2 lg:grid-cols-3"
+            : "flex flex-col"
+        )}
+      >
+        {filteredTools.length > 0 ? (
+          filteredTools.map((tool) => (
+            <ToolCard key={tool.id} tool={tool} />
           ))
         ) : (
           <div className="col-span-full text-center py-12">
-            <p className="text-muted-foreground">Nenhuma ferramenta encontrada</p>
+            <Search className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
+            <p className="text-lg font-medium text-foreground">Nenhuma ferramenta encontrada</p>
+            <p className="text-sm text-muted-foreground">Tente ajustar seus filtros de busca</p>
           </div>
         )}
+      </div>
+
+      {/* Quick Setup Banner */}
+      <div className="mt-8 rounded-xl bg-gradient-to-r from-primary/10 via-primary/5 to-transparent border border-primary/20 p-6">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div>
+            <h3 className="font-semibold text-lg">Configuração Rápida</h3>
+            <p className="text-sm text-muted-foreground">
+              Configure sua API do WhatsApp para habilitar todas as ferramentas automaticamente
+            </p>
+          </div>
+          <WhatsAppConfigPanel
+            trigger={
+              <Button variant="outline" className="gap-2 border-primary/30 hover:bg-primary/10">
+                <Settings className="h-4 w-4" />
+                Configurar Agora
+              </Button>
+            }
+          />
+        </div>
       </div>
     </div>
   );
