@@ -28,8 +28,8 @@ interface Subscription {
     max_bots: number;
     max_daily_messages: number;
     max_flows: number;
-    features: string[];
-  };
+    features: unknown;
+  } | null;
 }
 
 interface AuthContextType {
