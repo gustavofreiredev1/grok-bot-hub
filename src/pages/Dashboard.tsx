@@ -1,43 +1,14 @@
-import { Bot, MessageSquare, Users, TrendingUp, ArrowUpRight, ArrowDownRight, Zap, Calendar, Clock } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Bot, MessageSquare, Users, TrendingUp, ArrowUpRight, Zap, Calendar, Clock } from "lucide-react";
 import { StatCard } from "@/components/StatCard";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, AreaChart, Area } from "recharts";
+import { Skeleton } from "@/components/ui/skeleton";
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Line } from "recharts";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { tools } from "@/data/tools";
-
-const stats = [
-  {
-    title: "Ferramentas Ativas",
-    value: "7",
-    icon: Zap,
-    trend: { value: "2 novas", isPositive: true },
-    color: "primary" as const,
-  },
-  {
-    title: "Mensagens Hoje",
-    value: "1,234",
-    icon: MessageSquare,
-    trend: { value: "12.3%", isPositive: true },
-    color: "success" as const,
-  },
-  {
-    title: "Contatos Extraídos",
-    value: "8,456",
-    icon: Users,
-    trend: { value: "23.1%", isPositive: true },
-    color: "info" as const,
-  },
-  {
-    title: "Taxa de Sucesso",
-    value: "98.2%",
-    icon: TrendingUp,
-    trend: { value: "2.1%", isPositive: true },
-    color: "warning" as const,
-  },
-];
 
 const chartData = [
   { name: "Seg", mensagens: 4000, contatos: 240 },
@@ -58,12 +29,107 @@ const recentActivities = [
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { profile, subscription } = useAuth();
+  const { profile, subscription, loading: authLoading } = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
 
+  useEffect(() => {
+    // Simulate initial data loading
+    const timer = setTimeout(() => setIsLoading(false), 500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const loading = authLoading || isLoading;
   const userName = profile?.full_name?.split(" ")[0] || "Usuário";
   const planName = subscription?.plan?.name || "Starter";
 
+  const stats = [
+    {
+      title: "Ferramentas Ativas",
+      value: "7",
+      icon: Zap,
+      trend: { value: "2 novas", isPositive: true },
+      color: "primary" as const,
+    },
+    {
+      title: "Mensagens Hoje",
+      value: "1,234",
+      icon: MessageSquare,
+      trend: { value: "12.3%", isPositive: true },
+      color: "success" as const,
+    },
+    {
+      title: "Contatos Extraídos",
+      value: "8,456",
+      icon: Users,
+      trend: { value: "23.1%", isPositive: true },
+      color: "info" as const,
+    },
+    {
+      title: "Taxa de Sucesso",
+      value: "98.2%",
+      icon: TrendingUp,
+      trend: { value: "2.1%", isPositive: true },
+      color: "warning" as const,
+    },
+  ];
+
   const quickTools = tools.slice(0, 4);
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        {/* Header Skeleton */}
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div>
+            <Skeleton className="h-9 w-48" />
+            <Skeleton className="mt-2 h-5 w-72" />
+          </div>
+          <div className="flex gap-3">
+            <Skeleton className="h-10 w-32" />
+            <Skeleton className="h-10 w-32" />
+          </div>
+        </div>
+
+        {/* Stats Skeleton */}
+        <div className="grid gap-4 md:gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {[1, 2, 3, 4].map((i) => (
+            <Card key={i} className="bg-gradient-card border-border p-6">
+              <div className="flex items-center justify-between">
+                <Skeleton className="h-10 w-10 rounded-lg" />
+                <Skeleton className="h-4 w-16" />
+              </div>
+              <div className="mt-4">
+                <Skeleton className="h-8 w-24" />
+                <Skeleton className="mt-1 h-4 w-32" />
+              </div>
+            </Card>
+          ))}
+        </div>
+
+        {/* Charts Skeleton */}
+        <div className="grid gap-6 lg:grid-cols-3">
+          <Card className="lg:col-span-2 bg-gradient-card border-border p-6">
+            <Skeleton className="h-6 w-40 mb-2" />
+            <Skeleton className="h-4 w-56 mb-6" />
+            <Skeleton className="h-[280px] w-full" />
+          </Card>
+          <Card className="bg-gradient-card border-border p-6">
+            <Skeleton className="h-6 w-32 mb-4" />
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="flex items-center gap-3 mb-4">
+                <Skeleton className="h-2 w-2 rounded-full" />
+                <div className="flex-1">
+                  <Skeleton className="h-4 w-32" />
+                  <Skeleton className="mt-1 h-3 w-24" />
+                </div>
+                <Skeleton className="h-4 w-12" />
+              </div>
+            ))}
+          </Card>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

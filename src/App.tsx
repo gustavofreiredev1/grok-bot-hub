@@ -24,6 +24,8 @@ import FlowEditor from "./pages/FlowEditor";
 import FlowsLibrary from "./pages/FlowsLibrary";
 import UserGuide from "./pages/UserGuide";
 import Settings from "./pages/Settings";
+import Invoices from "./pages/Invoices";
+import FlowAnalysis from "./pages/FlowAnalysis";
 import NotFound from "./pages/NotFound";
 
 // Tools with simplified names
@@ -67,6 +69,8 @@ const App = () => (
                 <Route path="/flow-editor" element={<FlowEditor />} />
                 <Route path="/guide" element={<UserGuide />} />
                 <Route path="/settings" element={<Settings />} />
+                <Route path="/invoices" element={<Invoices />} />
+                <Route path="/flow-analysis" element={<FlowAnalysis />} />
                 
                 {/* Tools with new simplified routes */}
                 <Route path="/tools/ai-attendant" element={<AIAttendant />} />
