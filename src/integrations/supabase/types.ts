@@ -85,6 +85,224 @@ export type Database = {
         }
         Relationships: []
       }
+      campaigns: {
+        Row: {
+          created_at: string
+          delivered_count: number | null
+          failed_count: number | null
+          id: string
+          message_content: string
+          message_type: string | null
+          name: string
+          read_count: number | null
+          scheduled_at: string | null
+          sent_at: string | null
+          sent_count: number | null
+          status: string | null
+          target_tags: string[] | null
+          total_recipients: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          delivered_count?: number | null
+          failed_count?: number | null
+          id?: string
+          message_content: string
+          message_type?: string | null
+          name: string
+          read_count?: number | null
+          scheduled_at?: string | null
+          sent_at?: string | null
+          sent_count?: number | null
+          status?: string | null
+          target_tags?: string[] | null
+          total_recipients?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          delivered_count?: number | null
+          failed_count?: number | null
+          id?: string
+          message_content?: string
+          message_type?: string | null
+          name?: string
+          read_count?: number | null
+          scheduled_at?: string | null
+          sent_at?: string | null
+          sent_count?: number | null
+          status?: string | null
+          target_tags?: string[] | null
+          total_recipients?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      contacts: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          custom_fields: Json | null
+          email: string | null
+          id: string
+          is_blocked: boolean | null
+          last_seen_at: string | null
+          name: string | null
+          notes: string | null
+          phone: string
+          source: string | null
+          tags: string[] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          custom_fields?: Json | null
+          email?: string | null
+          id?: string
+          is_blocked?: boolean | null
+          last_seen_at?: string | null
+          name?: string | null
+          notes?: string | null
+          phone: string
+          source?: string | null
+          tags?: string[] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          custom_fields?: Json | null
+          email?: string | null
+          id?: string
+          is_blocked?: boolean | null
+          last_seen_at?: string | null
+          name?: string | null
+          notes?: string | null
+          phone?: string
+          source?: string | null
+          tags?: string[] | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      conversations: {
+        Row: {
+          assigned_to: string | null
+          channel: string | null
+          contact_id: string
+          created_at: string
+          id: string
+          last_message_at: string | null
+          status: string
+          tags: string[] | null
+          unread_count: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          channel?: string | null
+          contact_id: string
+          created_at?: string
+          id?: string
+          last_message_at?: string | null
+          status?: string
+          tags?: string[] | null
+          unread_count?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          assigned_to?: string | null
+          channel?: string | null
+          contact_id?: string
+          created_at?: string
+          id?: string
+          last_message_at?: string | null
+          status?: string
+          tags?: string[] | null
+          unread_count?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conversations_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      deals: {
+        Row: {
+          closed_at: string | null
+          contact_id: string | null
+          created_at: string
+          currency: string | null
+          id: string
+          notes: string | null
+          position: number | null
+          stage_id: string
+          title: string
+          updated_at: string
+          user_id: string
+          value: number | null
+        }
+        Insert: {
+          closed_at?: string | null
+          contact_id?: string | null
+          created_at?: string
+          currency?: string | null
+          id?: string
+          notes?: string | null
+          position?: number | null
+          stage_id: string
+          title: string
+          updated_at?: string
+          user_id: string
+          value?: number | null
+        }
+        Update: {
+          closed_at?: string | null
+          contact_id?: string | null
+          created_at?: string
+          currency?: string | null
+          id?: string
+          notes?: string | null
+          position?: number | null
+          stage_id?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+          value?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deals_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "deals_stage_id_fkey"
+            columns: ["stage_id"]
+            isOneToOne: false
+            referencedRelation: "pipeline_stages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       flows: {
         Row: {
           created_at: string
@@ -209,6 +427,83 @@ export type Database = {
           },
         ]
       }
+      messages: {
+        Row: {
+          content: string | null
+          conversation_id: string
+          created_at: string
+          id: string
+          media_url: string | null
+          message_type: string
+          metadata: Json | null
+          sender_type: string
+          status: string | null
+          user_id: string
+          whatsapp_message_id: string | null
+        }
+        Insert: {
+          content?: string | null
+          conversation_id: string
+          created_at?: string
+          id?: string
+          media_url?: string | null
+          message_type?: string
+          metadata?: Json | null
+          sender_type?: string
+          status?: string | null
+          user_id: string
+          whatsapp_message_id?: string | null
+        }
+        Update: {
+          content?: string | null
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          media_url?: string | null
+          message_type?: string
+          metadata?: Json | null
+          sender_type?: string
+          status?: string | null
+          user_id?: string
+          whatsapp_message_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pipeline_stages: {
+        Row: {
+          color: string | null
+          created_at: string
+          id: string
+          name: string
+          position: number
+          user_id: string
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string
+          id?: string
+          name: string
+          position?: number
+          user_id: string
+        }
+        Update: {
+          color?: string | null
+          created_at?: string
+          id?: string
+          name?: string
+          position?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       plans: {
         Row: {
           created_at: string
@@ -295,6 +590,33 @@ export type Database = {
           max_daily_messages?: number | null
           max_free_bots?: number | null
           updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      quick_replies: {
+        Row: {
+          category: string | null
+          content: string
+          created_at: string
+          id: string
+          shortcut: string
+          user_id: string
+        }
+        Insert: {
+          category?: string | null
+          content: string
+          created_at?: string
+          id?: string
+          shortcut: string
+          user_id: string
+        }
+        Update: {
+          category?: string | null
+          content?: string
+          created_at?: string
+          id?: string
+          shortcut?: string
           user_id?: string
         }
         Relationships: []
