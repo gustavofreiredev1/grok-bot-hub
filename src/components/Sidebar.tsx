@@ -13,7 +13,11 @@ import {
   BookOpen,
   CreditCard,
   LogOut,
-  ChevronDown
+  ChevronDown,
+  MessageSquare,
+  Users,
+  Megaphone,
+  Kanban,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
@@ -29,17 +33,17 @@ import {
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { name: "Ferramentas", href: "/bots", icon: Zap },
+  { name: "Inbox", href: "/inbox", icon: MessageSquare },
+  { name: "Contatos", href: "/contacts", icon: Users },
+  { name: "CRM", href: "/crm", icon: Kanban },
+  { name: "Campanhas", href: "/campaigns", icon: Megaphone },
   { name: "Fluxos", href: "/flows", icon: Workflow },
-  { name: "Mensagens", href: "/messages", icon: Send },
-  { name: "Agendamentos", href: "/schedule", icon: Calendar },
-  { name: "Relatórios", href: "/reports", icon: FileText },
+  { name: "Ferramentas", href: "/bots", icon: Zap },
   { name: "Analytics", href: "/analytics", icon: BarChart3 },
-  { name: "Análise Fluxos", href: "/flow-analysis", icon: BarChart3 },
 ];
 
 const secondaryNavigation = [
-  { name: "Upload", href: "/upload", icon: Upload },
+  { name: "Relatórios", href: "/reports", icon: FileText },
   { name: "Faturas", href: "/invoices", icon: CreditCard },
   { name: "Manual", href: "/guide", icon: BookOpen },
   { name: "Configurações", href: "/settings", icon: Settings },

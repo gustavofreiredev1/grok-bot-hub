@@ -26,6 +26,10 @@ import UserGuide from "./pages/UserGuide";
 import Settings from "./pages/Settings";
 import Invoices from "./pages/Invoices";
 import FlowAnalysis from "./pages/FlowAnalysis";
+import Inbox from "./pages/Inbox";
+import Contacts from "./pages/Contacts";
+import CRM from "./pages/CRM";
+import Campaigns from "./pages/Campaigns";
 import NotFound from "./pages/NotFound";
 
 // Tools with simplified names
@@ -59,6 +63,10 @@ const App = () => (
               {/* Protected Routes */}
               <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
                 <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/inbox" element={<Inbox />} />
+                <Route path="/contacts" element={<Contacts />} />
+                <Route path="/crm" element={<CRM />} />
+                <Route path="/campaigns" element={<Campaigns />} />
                 <Route path="/bots" element={<Bots />} />
                 <Route path="/messages" element={<Messages />} />
                 <Route path="/upload" element={<FileUpload />} />
